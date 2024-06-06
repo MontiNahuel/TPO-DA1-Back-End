@@ -6,9 +6,7 @@ import jakarta.persistence.*;
 @Table(name = "usuarios")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @Column(name = "username")
+    @Column(name = "dni")
     private String username;
     private String password;
 
@@ -20,14 +18,6 @@ public class User {
         super();
         this.username = user;
         this.password = password;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getUser() {
@@ -48,6 +38,6 @@ public class User {
 
     @Override
     public String toString() {
-        return "User [id=" + id + ", user=" + username + ", password=" + password + "]";
+        return "User [user=" + username + ", password=" + password + "]";
     }
 }

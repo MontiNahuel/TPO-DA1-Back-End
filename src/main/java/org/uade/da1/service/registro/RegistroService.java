@@ -18,7 +18,16 @@ public class RegistroService implements IRegistroService {
     }
 
     @Override
-    public void registrar(Registro r) {
-        daoRegistro.save(r);
+    public boolean registrar(Registro r) throws Exception {
+        try {
+            if (daoRegistro.getByEmail(r.getEmail())) {
+                return false;
+            } else {
+                daoRegistro.save(r);
+                return true;
+            }
+        } catch (Exception e) {
+            throw new Exception("Error en el sistema", e);
+        }
     }
 }

@@ -5,6 +5,7 @@ import jakarta.persistence.PersistenceContext;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.uade.da1.model.entity.Personal;
@@ -32,9 +33,23 @@ public class DAORegistro implements IDAORegistro {
 
     @Override
     @Transactional
-    public void save(Registro r) {
+    public void save(Registro r) throws Exception {
         Session session = entityManager.unwrap(Session.class);
-        session.persist(r);
+        try {
+            session.persist(r);
+        } catch (Exception e) {
+            throw new Exception("Fallo critico en el sistema", e);
+        }
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public boolean getByEmail(String email) {
+        Session currentSesion = entityManager.unwrap(Session.class);
+        Query<Registro> query = currentSesion.createQuery("FROM Registro WHERE email=:email", Registro.class);
+        query.setParameter("email", email);
+        Registro registro = query.uniqueResult();
+
+        return !Objects.isNull(registro);
+    }
 }

@@ -55,12 +55,14 @@ public class UserDAO implements IUserDAO {
 
     @Override
     @Transactional(readOnly = true)
-    public boolean existeUsuario(String user, String password) {
+    public boolean existeUsuario(String user) {
+        System.out.println(user);
         // Mejorar cambiando el regreso con un boolean en vez de un User
         Session currentSesion = entity.unwrap(Session.class);
         Query<User> query = currentSesion.createQuery("FROM User WHERE username=:username", User.class);
         query.setParameter("username", user);
         User usuario = query.uniqueResult();
+        System.out.println(usuario);
         if (usuario != null) {
             return false;
         } else {

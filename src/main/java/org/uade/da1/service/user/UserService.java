@@ -21,8 +21,8 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public boolean existeUsuario(String user, String password) {
-        return usuarioDAO.existeUsuario(user, password);
+    public boolean existeUsuario(String user) {
+        return usuarioDAO.existeUsuario(user);
     }
 
     @Override

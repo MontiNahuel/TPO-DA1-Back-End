@@ -55,7 +55,7 @@ public class AuthController {
     @PostMapping("/register") //Eliminar al final
     public ResponseEntity<String> register(@RequestBody UserDTO credenciales) {
         System.out.println(credenciales);
-        if (usuarioService.existeUsuario(credenciales.getUserName(), credenciales.getPassword())) {
+        if (usuarioService.existeUsuario(credenciales.getUserName())) {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             User usuario = new User();
             System.out.println(credenciales.getUserName());
@@ -88,5 +88,6 @@ public class AuthController {
             return new ResponseEntity<>(token, HttpStatus.OK);
         }
     }
+
 }
 

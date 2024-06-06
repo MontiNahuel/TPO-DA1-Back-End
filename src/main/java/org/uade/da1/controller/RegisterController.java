@@ -11,6 +11,7 @@ import org.uade.da1.model.dao.registro.IDAORegistro;
 import org.uade.da1.model.dto.UserDTO;
 import org.uade.da1.model.entity.Registro;
 import org.uade.da1.service.registro.IRegistroService;
+import org.uade.da1.service.user.IUserService;
 import org.uade.da1.service.vecino.IVecinoService;
 
 @RestController
@@ -25,11 +26,17 @@ public class RegisterController {
     @Autowired
     private IVecinoService vecinoService;
 
+    @Autowired
+    private IUserService usuarioService;
+
     @PostMapping("/verificacion") //Modificar retorno
     public ResponseEntity<String> verificarSiEsVecino(@RequestParam String dni) {
-        System.out.println(dni);
+        System.out.println("DNI:" + dni);
         // Verifica si es vecino del municipio
         // Si lo es, se fija si ya esta inscripto
+        if (!usuarioService.existeUsuario(dni)) {
+            return new ResponseEntity<>("El vecino ya tiene una cuenta", HttpStatus.UNAUTHORIZED);
+        }
         if (vecinoService.buscarPorDni(dni) == null) {
             return new ResponseEntity<>("El vecino no forma parte del municipio", HttpStatus.UNAUTHORIZED);
         } else {
@@ -43,8 +50,13 @@ public class RegisterController {
 
     @PostMapping("/completarRegistro") //Modificar endpoint
     public ResponseEntity<String> inscripcionVecino(@RequestBody Registro r) {
-        registroService.registrar(r);
-        return new ResponseEntity<>("Vecino inscripto para registro correctamente", HttpStatus.OK);
+        try {
+            if (!registroService.registrar(r)) {
+                return new ResponseEntity<>("El email proporcionado ya esta en uso", HttpStatus.OK);
+            }
+            return new ResponseEntity<>("Vecino inscripto para registro correctamente", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error en el registro del vecino", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
-
 }

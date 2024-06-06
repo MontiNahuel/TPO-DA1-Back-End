@@ -1,11 +1,13 @@
 package org.uade.da1.config;
 
+import java.util.Arrays;
 import java.util.Base64;
 
 import javax.crypto.SecretKey;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,10 +17,40 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins(Arrays.asList("http://localhost:8081"));
+        config.setAllowedMethods(Arrays.asList("GET","POST"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfig() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:8081")
+                        .allowedMethods(HttpMethod.GET.name(),
+                                HttpMethod.POST.name())
+                        .allowedHeaders(HttpHeaders.CONTENT_TYPE,
+                                HttpHeaders.AUTHORIZATION);
+            }
+        };
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -26,7 +58,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         (authz) -> authz.anyRequest().authenticated())
                 .addFilterBefore(jwtAuth(), UsernamePasswordAuthenticationFilter.class);
-        http.cors().and().csrf().disable();
+        http.cors(c -> c.configurationSource(corsConfigurationSource())).csrf().disable();
         //http.authorizeRequests(requests -> requests.requestMatchers(HttpMethod.POST).authenticated());
         return http.build();
     }
