@@ -8,4 +8,5 @@ public interface IVecinoService {
     public List<Vecino> findAll();
     public Vecino buscarPorDni(String dni);
     public void save(Vecino v); // Posible eliminacion tambien
+    List<Vecino> buscarCoincidencias(String name);
 }

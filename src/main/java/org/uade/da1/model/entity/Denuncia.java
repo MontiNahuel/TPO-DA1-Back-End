@@ -3,11 +3,14 @@ package org.uade.da1.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity(name = "denuncias")
 public class Denuncia {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer iddenuncias;
     private String documento;
     @JsonInclude(JsonInclude.Include.NON_NULL)

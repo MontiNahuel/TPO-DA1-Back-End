@@ -20,4 +20,7 @@ public class DenunciaService {
         return denunciaRepository.findByDocumento(documento);
     }
 
+    public void guardarDenuncia(Denuncia d) {
+        denunciaRepository.save(d);
+    }
 }
