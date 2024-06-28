@@ -3,6 +3,7 @@ package org.uade.da1.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.uade.da1.model.entity.Vecino;
 import org.uade.da1.service.vecino.IVecinoService;
@@ -18,5 +19,11 @@ public class VecinoController {
     @RequestMapping(value = "/todos", method = RequestMethod.GET)
     public List<Vecino> findAll() {
         return vecinoService.findAll();
+    }
+
+    @RequestMapping(value = "/findOne")
+    public Vecino findOne(@RequestParam String id) {
+        System.out.println(id);
+        return vecinoService.buscarPorDni(id);
     }
 }

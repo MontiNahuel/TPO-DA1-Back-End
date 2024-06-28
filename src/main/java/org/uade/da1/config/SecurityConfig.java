@@ -71,7 +71,8 @@ public class SecurityConfig {
                 "auth/register",
                 "auth/login/personal",
                 "registro/verificacion",
-                "registro/completarRegistro"
+                "registro/completarRegistro",
+                "anuncios/todos"
         );
     }
 

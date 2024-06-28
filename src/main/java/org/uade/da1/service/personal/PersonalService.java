@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.uade.da1.model.dao.personal.IDAOPersonal;
 import org.uade.da1.model.dto.DTOPersonal;
 import org.uade.da1.model.entity.Personal;
+import org.uade.da1.repository.PersonalRepository;
 
 import java.util.Objects;
 
@@ -14,6 +15,8 @@ public class PersonalService implements IPersonalService{
 
     @Autowired
     private IDAOPersonal daoPersonal;
+    @Autowired
+    private PersonalRepository personalRepository;
 
     @Override
     public Personal obtenerEspecifico(int legajo, String password) {
@@ -28,5 +31,9 @@ public class PersonalService implements IPersonalService{
                 p.getSector(),
                 p.getDocumento()
         );
+    }
+
+    public Personal obtenerPersonalEspecifico(Integer legajo) {
+        return personalRepository.findByLegajo(legajo);
     }
 }

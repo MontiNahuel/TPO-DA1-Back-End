@@ -35,7 +35,7 @@ public class RegisterController {
         // Verifica si es vecino del municipio
         // Si lo es, se fija si ya esta inscripto
         if (!usuarioService.existeUsuario(dni)) {
-            return new ResponseEntity<>("El vecino ya tiene una cuenta", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("El vecino ya tiene una cuenta", HttpStatus.CONFLICT);
         }
         if (vecinoService.buscarPorDni(dni) == null) {
             return new ResponseEntity<>("El vecino no forma parte del municipio", HttpStatus.UNAUTHORIZED);
