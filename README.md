@@ -49,4 +49,4 @@ jwt.secret=tu_clave_secreta
 ## 🔗 Frontend del proyecto
 
 El frontend de esta aplicación se encuentra disponible en el siguiente repositorio:  
-👉 [Ver repositorio frontend](https://github.com/tuusuario/app-municipal-frontend)
+👉 [Ver repositorio frontend](https://github.com/MontiNahuel/TPO-DA1-Front-End/)
